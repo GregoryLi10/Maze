@@ -18,7 +18,7 @@ public class MazeSaver {
 				if (wall!=maze[i][j].contains(MazeGeneration.Direction.RIGHT)) 
 					w++;
 				else {
-					walls.append(""+w);
+					walls.append(w>9?"["+w+"]":w);
 					wall=!maze[i][j].contains(MazeGeneration.Direction.RIGHT);
 					w=1;
 				}
@@ -26,7 +26,7 @@ public class MazeSaver {
 				if (floor!=maze[i][j].contains(MazeGeneration.Direction.DOWN)) 
 					f++;
 				else {
-					floors.append(""+f);
+					floors.append(f>9?"["+f+"]":f);
 					floor=!maze[i][j].contains(MazeGeneration.Direction.DOWN);
 					f=1;
 				}

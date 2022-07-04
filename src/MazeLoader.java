@@ -17,11 +17,20 @@ public class MazeLoader {
 		for (int temp=fr.read(); temp!=-1; temp=fr.read()) { //reads file and stores into a list of first bool and alternating numbers after
 			ArrayList<Integer> row=new ArrayList<Integer>();
 			for (int i=fr.read(); i!=(int)'/'&&i!=-1; i=fr.read()) 
-				row.add(i-48);
+				if (i=='[') {
+					i=0;
+					for (int j=fr.read(); j!=']'; j=fr.read()) {
+						i*=10;
+						i+=(j-48);
+					}
+					row.add(i);
+				}
+				else row.add(i-48);
 			list.add(new AbstractMap.SimpleEntry<Boolean, ArrayList<Integer>>(temp-48==1, row)); //uses map entry to temporarily store info
 		}
 		System.out.println(list);
 		HashSet<MazeGeneration.Direction>[][] maze=new HashSet[list.size()/2+1][list.get(0).getValue().stream().mapToInt(Integer::intValue).sum()+1];
+		System.out.println(maze.length+" "+maze[0].length);
 		for (int i=0; i<maze.length; i++) { //fills in maze for drawing 
 			boolean wall=list.get(i*2).getKey();
 			int indw=1, w=list.get(i*2).getValue().get(0);
@@ -41,8 +50,14 @@ public class MazeLoader {
 			boolean floor=list.get(i*2+1).getKey();
 			int indf=1, f=list.get(i*2+1).getValue().get(0);
 			for (int j=0; j<maze[i].length; j++) {
-				if(j>=f) {
-					f+=list.get(i*2+1).getValue().get(indf);
+				if(j==f) {
+					try {
+						f+=list.get(i*2+1).getValue().get(indf);
+					} catch (Exception e) {
+						System.out.println(list.get(i*2+1).getValue()+" "+indf+" "+(i*2+1));
+						e.printStackTrace();
+						System.exit(-1);
+					}
 					indf++;
 					floor=!floor;
 				}
@@ -60,5 +75,25 @@ public class MazeLoader {
 			}
 		}
 		return maze;
+	}
+	
+	public static void draw(HashSet<MazeGeneration.Direction>[][] maze) {
+		for (int i=0; i<maze.length; i++)  
+			System.out.print(" __"); //prints the top of the maze
+		System.out.println();
+		for (int i=0; i<maze.length; i++) {
+			System.out.print('|'); //prints left wall of the maze
+			for (int j=0; j<maze[i].length; j++) {
+				if(!maze[i][j].contains(MazeGeneration.Direction.DOWN))
+					System.out.print("__"); 
+				else
+					System.out.print("  ");
+				if(!maze[i][j].contains(MazeGeneration.Direction.RIGHT))
+					System.out.print('|');
+				else
+					System.out.print(" ");
+			} //draws maze
+			System.out.println();
+		}
 	}
 }

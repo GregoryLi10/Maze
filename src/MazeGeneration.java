@@ -47,7 +47,7 @@ public class MazeGeneration {
 			System.out.println();
 		}
 	}
-	
+
 	public void generate() {
 		generate(start, false);
 		System.out.println(pEndpoints); //prints potential endpoints for the maze
@@ -63,7 +63,7 @@ public class MazeGeneration {
 			if (!isDeadend) pEndpoints.add(List.of(curr[0], curr[1])); //add to potential endpoints if true deadend
 			visited.add(List.of(curr[0], curr[1])); //add point to visited
 			maze[curr[0]][curr[1]].add(backtraceDir.pop()); //add previous direction
-			System.out.println("["+curr[0]+", "+curr[1]+"]"); //print backtrace steps
+//			System.out.println("["+curr[0]+", "+curr[1]+"]"); //print backtrace steps
 			generate(backtrace.pop(), true); //go backwards by popping from stack
 			return;
 		}
@@ -71,7 +71,7 @@ public class MazeGeneration {
 		visited.add(List.of(curr[0], curr[1])); //adds to visited set
 		backtrace.push(curr); //pushes to backtrace
 		maze[curr[0]][curr[1]].add(dir); //adds direction to cell
-		System.out.println("["+curr[0]+", "+curr[1]+"] "+dir); //prints step 
+//		System.out.println("["+curr[0]+", "+curr[1]+"] "+dir); //prints step 
 		switch(dir) { //pushes opposite direction for backtrace and moves to next cell
 		case UP: 
 			backtraceDir.push(Direction.DOWN); 
@@ -149,6 +149,6 @@ public class MazeGeneration {
 	}
 	
 	public static void main(String[] args) { //main method to create maze generator
-		new MazeGeneration(5);
+		new MazeGeneration(45);
 	}
 }
