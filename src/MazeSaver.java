@@ -31,8 +31,8 @@ public class MazeSaver {
 					f=1;
 				}
 			}
-			if (w!=1) walls.append(w-1);
-			floors.append(f);
+			if (w!=1) walls.append(w>9?"["+(w-1)+"]":w-1);
+			floors.append(f>9?"["+f+"]":f);
 			wr.write(walls.toString());
 			if (i!=maze.length-1) { 
 				wr.write('/');

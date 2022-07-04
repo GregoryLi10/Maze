@@ -49,7 +49,16 @@ public class MazeGeneration {
 	}
 
 	public void generate() {
-		generate(start, false);
+		try {
+			generate(start, false);
+		} catch(StackOverflowError e) {
+			for (int i=0; i<2; i++)
+				try {
+					generate(start, false);
+				} catch (StackOverflowError e1) {
+					
+				}
+		}
 		System.out.println(pEndpoints); //prints potential endpoints for the maze
 		draw(); 
 	}
@@ -92,7 +101,7 @@ public class MazeGeneration {
 		}
 	}
 	
-	private ArrayList<Direction> possibles(int[] n){ //creates list of possible directions 
+	private ArrayList<Direction> possibles(int[] n) { //creates list of possible directions 
 		ArrayList<Direction> possibles=new ArrayList<Direction>();
 		for (Direction dir: Direction.values())
 			switch(dir) {
@@ -149,6 +158,6 @@ public class MazeGeneration {
 	}
 	
 	public static void main(String[] args) { //main method to create maze generator
-		new MazeGeneration(45);
+		new MazeGeneration(50);
 	}
 }
