@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -128,6 +129,20 @@ public class MazeGeneration {
 		backtrace=new Stack<int[]>();
 		backtraceDir=new Stack<Direction>();
 		generate();
+		MazeSaver saver=new MazeSaver();
+		try {
+			saver.save("maze.txt", maze);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MazeLoader loader=new MazeLoader();
+		try {
+			maze=loader.load("maze.txt");
+			draw();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public MazeGeneration(int n) { //constructor for square mazes
@@ -135,6 +150,6 @@ public class MazeGeneration {
 	}
 	
 	public static void main(String[] args) { //main method to create maze generator
-		new MazeGeneration(10, 20);
+		new MazeGeneration(5);
 	}
 }
