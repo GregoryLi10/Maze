@@ -128,15 +128,14 @@ public class MazeGeneration {
 		pEndpoints=new HashSet<List<Integer>>();
 		backtrace=new Stack<int[]>();
 		backtraceDir=new Stack<Direction>();
-		generate();
-		MazeSaver saver=new MazeSaver();
+		generate(); //generate maze
+		MazeSaver saver=new MazeSaver(); //save maze to text file
 		try {
 			saver.save("maze.txt", maze);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		MazeLoader loader=new MazeLoader();
+		MazeLoader loader=new MazeLoader(); //load maze from text file
 		try {
 			maze=loader.load("maze.txt");
 			draw();

@@ -13,16 +13,16 @@ public class MazeLoader {
 	
 	public HashSet<MazeGeneration.Direction>[][] load(String filename) throws IOException {
 		fr=new FileReader(filename);
-		ArrayList<Entry<Boolean, ArrayList<Integer>>> list=new ArrayList<Entry<Boolean, ArrayList<Integer>>>();
-		for (int temp=fr.read(); temp!=-1; temp=fr.read()) {
+		ArrayList<Entry<Boolean, ArrayList<Integer>>> list=new ArrayList<Entry<Boolean, ArrayList<Integer>>>(); 
+		for (int temp=fr.read(); temp!=-1; temp=fr.read()) { //reads file and stores into a list of first bool and alternating numbers after
 			ArrayList<Integer> row=new ArrayList<Integer>();
 			for (int i=fr.read(); i!=(int)'/'&&i!=-1; i=fr.read()) 
 				row.add(i-48);
-			list.add(new AbstractMap.SimpleEntry<Boolean, ArrayList<Integer>>(temp-48==1, row));
+			list.add(new AbstractMap.SimpleEntry<Boolean, ArrayList<Integer>>(temp-48==1, row)); //uses map entry to temporarily store info
 		}
 		System.out.println(list);
 		HashSet<MazeGeneration.Direction>[][] maze=new HashSet[list.size()/2+1][list.get(0).getValue().stream().mapToInt(Integer::intValue).sum()+1];
-		for (int i=0; i<maze.length; i++) {
+		for (int i=0; i<maze.length; i++) { //fills in maze for drawing 
 			boolean wall=list.get(i*2).getKey();
 			int indw=1, w=list.get(i*2).getValue().get(0);
 			for (int j=0; j<maze[i].length; j++) {
@@ -50,7 +50,7 @@ public class MazeLoader {
 					maze[i][j].add(MazeGeneration.Direction.DOWN);
 			}
 		}
-		for (int i=maze.length-1; i>=0; i--) {
+		for (int i=maze.length-1; i>=0; i--) { //fills the rest of up and left directions for each cell
 			for (int j=maze[i].length-1; j>=0; j--) {
 				if (i!=0&&maze[i-1][j].contains(MazeGeneration.Direction.DOWN)) 
 					maze[i][j].add(MazeGeneration.Direction.UP);
