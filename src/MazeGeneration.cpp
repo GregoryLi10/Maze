@@ -11,7 +11,7 @@ MazeGeneration::MazeGeneration(int width, int height) {//constructor initialize 
 	start = {(int)(rand() % height), (int)(rand() % width)};
 	MazeGeneration::visited = new unordered_set<vector<int>, VectorHash>(); //ERROR
 	MazeGeneration::pEndpoints = new unordered_set<vector<int>, VectorHash>();
-	backtrace = new stack<vector<int> >();
+	backtrace = new stack<vector<int>>();
 	backtraceDir = new stack<Direction>();
 	generate(); //generate maze
 }
@@ -30,12 +30,11 @@ void MazeGeneration::draw() {
 	for (int i=0; i<height; i++) {
 		cout<<"|";
 		for (int j=0; j<width; j++){
-			unordered_set<Direction>* dim1 = maze[i];
-			if(dim1[j].find(DOWN)==dim1[j].end())
+			if(maze[i][j].find(DOWN)==maze[i][j].end())
 				cout<<"__";
 			else
 				cout<<"  ";
-			if (dim1[j].find(RIGHT)==dim1[j].end())
+			if (maze[i][j].find(RIGHT)==maze[i][j].end())
 				cout<<"|";
 			else 
 				cout<<" ";
@@ -59,8 +58,7 @@ void MazeGeneration::generate(vector<int> curr, bool isDeadend) {
 		MazeGeneration::visited->insert(curr); //add point to visited
 		Direction temp1 = backtraceDir->top();
 		backtraceDir->pop();
-		unordered_set<Direction>* dim1 = maze[curr.at(0)];
-		dim1[curr.at(1)].insert(temp1);
+		maze[curr.at(0)][curr.at(1)].insert(temp1);
 		vector<int> temp2 = backtrace->top();
 		backtrace->pop();
 		MazeGeneration::generate(temp2, true); //go backwards by popping from stack
@@ -69,8 +67,7 @@ void MazeGeneration::generate(vector<int> curr, bool isDeadend) {
 	Direction dir = possibles.at(rand()%possibles.size()); //gets random valid direction
 	visited->insert(curr); //adds to visited set
 	backtrace->push(curr); //pushes to backtrace stack
-	unordered_set<Direction>* dim1 = maze[curr.at(0)];
-	dim1[curr.at(1)].insert(dir); //adds direction to cell
+	maze[curr.at(0)][curr.at(1)].insert(dir); //adds direction to cell
 	switch (dir) {//pushes opposite direction for backtrace and moves to next cell
 	case UP:
 		backtraceDir->push(DOWN);
@@ -104,9 +101,21 @@ vector<MazeGeneration::Direction>* MazeGeneration::possibles(vector<int> n) {//c
 	return possibles;
 }
 
-map<bool, vector<int> > MazeGeneration::DirectionToCoords() {
-	map<bool, vector<int> > map;
-	return map;
+vector<vector<int>> MazeGeneration::DirectionToCoords(int depth) {
+	vector<vector<int>, VectorHash> v, h;
+	for (int i=0; i<height; i++) {
+		for (int j=0; j<width; j++) {
+			if (i==0&&!(maze[i][j].find(UP)!=maze[i][j].end()))
+				h.push_back({j*depth, i*depth});
+			if (!(maze[i][j].find(DOWN)!=maze[i][j].end()))
+				h.push_back({j*depth, (i+1)*depth});
+			if (j==0&&!(maze[i][j].find(LEFT)!=maze[i][j].end()))
+				v.push_back({j*depth, i*depth});
+			if (!(maze[i][j].find(RIGHT)!=maze[i][j].end()))
+				v.push_back({(j+1)*depth, i*depth});
+		}
+	}
+	return ;
 }
 
 // MazeGeneration::MazeGeneration(int n) {//constructor for square mazes

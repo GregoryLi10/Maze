@@ -28,7 +28,7 @@ public:
 	};
 	void generate();
 	void draw();
-	map<bool, vector<int> > DirectionToCoords();
+	vector<vector<int>> DirectionToCoords(int depth);
 	int width, height;
 
 	unordered_set<vector<int>, VectorHash>* pEndpoints; //potential endpoints set
