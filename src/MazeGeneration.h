@@ -12,6 +12,7 @@ using namespace std;
 class MazeGeneration  {
 public:
 	MazeGeneration(int width, int height);
+	// MazeGeneration(int n);
 	struct VectorHash {
 		size_t operator()(const std::vector<int>& v) const {
 			std::hash<int> hasher;

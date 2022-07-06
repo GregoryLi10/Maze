@@ -18,34 +18,37 @@ MazeGeneration::MazeGeneration(int width, int height) {//constructor initialize 
 
 void MazeGeneration::generate() {
 	generate(start, false);
-	// draw();
+	draw();
 	//cout < < pEndpoints; //prints potential endpoints for the maze
 }
 
 void MazeGeneration::draw() {
-	// for (int i=0; i<width; i++) {
-	// 	cout<<" __";
-	// }
-	// cout<<"\n";
-// 	for (int i=0; i<height; i++) {
-// 		cout<<"|";
-// 		for (int j=0; j<width; j++){
-// 			unordered_set<Direction>* dim1 = maze[i];
-// 			// if(dim1[j].find(DOWN)==dim1[j].end())
-// 			// 	cout<<"__";
-// 			// else
-// 			// 	cout<<"  ";
-// 			// if (dim1[j].find(RIGHT)==dim1[j].end())
-// 			// 	cout<<"|";
-// 			// else 
-// 			// 	cout<<" ";
-// 		}
-// 		cout<<"\n";
-// 	}
+	for (int i=0; i<width; i++) {
+		cout<<" __";
+	}
+	cout<<"\n";
+	for (int i=0; i<height; i++) {
+		cout<<"|";
+		for (int j=0; j<width; j++){
+			unordered_set<Direction>* dim1 = maze[i];
+			if(dim1[j].find(DOWN)==dim1[j].end())
+				cout<<"__";
+			else
+				cout<<"  ";
+			if (dim1[j].find(RIGHT)==dim1[j].end())
+				cout<<"|";
+			else 
+				cout<<" ";
+		}
+		cout<<"\n";
+	}
 }
 
 
 void MazeGeneration::generate(vector<int> curr, bool isDeadend) {
+	for (int z:curr)
+		cout<<z<<", ";
+	cout<<"\n";
 	if (curr == start && !visited->empty()) {
 		return; //if it backtraces back to start, end generation
 	}
@@ -90,13 +93,13 @@ void MazeGeneration::generate(vector<int> curr, bool isDeadend) {
 
 vector<MazeGeneration::Direction>* MazeGeneration::possibles(vector<int> n) {//creates list of possible directions 
 	vector<MazeGeneration::Direction>* possibles = new vector<MazeGeneration::Direction>();
-	if (!(n.at(0) == 0 && visited->find({n.at(0) - 1,n.at(1)}) != visited->end()))
+	if (!(n.at(0) == 0 || visited->find({n.at(0) - 1,n.at(1)}) != visited->end()))
 		possibles->push_back(UP);
-	if (!(n.at(0) == MazeGeneration::height - 1 && visited->find({n.at(0) + 1, n.at(1)}) != visited->end()))
+	if (!(n.at(0) == MazeGeneration::height - 1 || visited->find({n.at(0) + 1, n.at(1)}) != visited->end()))
 		possibles->push_back(DOWN);
-	if (!(n.at(1) == 0 && visited->find({n.at(0), n.at(1) - 1}) != visited->end()))
+	if (!(n.at(1) == 0 || visited->find({n.at(0), n.at(1) - 1}) != visited->end()))
 		possibles->push_back(LEFT);
-	if (!(n.at(1) == width - 1 && visited->find({n.at(0), n.at(1) + 1}) != visited->end()))
+	if (!(n.at(1) == width - 1 || visited->find({n.at(0), n.at(1) + 1}) != visited->end()))
 		possibles->push_back(RIGHT);
 	return possibles;
 }
@@ -106,9 +109,9 @@ map<bool, vector<int> > MazeGeneration::DirectionToCoords() {
 	return map;
 }
 
-//MazeGeneration::MazeGeneration(int n) {//constructor for square mazes
-//	this(n, n);
-//}
+// MazeGeneration::MazeGeneration(int n) {//constructor for square mazes
+// 	MazeGeneration(n, n);
+// }
 
 MazeGeneration::~MazeGeneration() {
 	for (int i = 0; i < height; i++) {
@@ -118,5 +121,5 @@ MazeGeneration::~MazeGeneration() {
 }
 
 int main() {
-	MazeGeneration obj(5,5);
+	MazeGeneration obj(25,25);
 }
