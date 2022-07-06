@@ -1,10 +1,7 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
-
 #pragma once
 
-#include "CoreMinimal.h"
 #include<iostream>
-#include<String>
+#include<string>
 #include<vector>
 #include<stack>
 #include<unordered_set>
@@ -12,7 +9,6 @@
 #include<time.h>
 using namespace std;
 
-UCLASS()
 class MazeGeneration  {
 public:
 	MazeGeneration(int width, int height);
@@ -30,13 +26,11 @@ public:
 		UP, DOWN, LEFT, RIGHT
 	};
 	void generate();
-	map<bool, vector<int>> DirectionToCoords();
+	void draw();
+	map<bool, vector<int> > DirectionToCoords();
+	int width, height;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		int width, height;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		unordered_set<vector<int>, VectorHash>* pEndpoints; //potential endpoints set
+	unordered_set<vector<int>, VectorHash>* pEndpoints; //potential endpoints set
 	~MazeGeneration();
 
 	
@@ -47,6 +41,6 @@ private:
 	unordered_set<vector<int>, VectorHash>* visited; //visited set
 	unordered_set<Direction>** maze;	
 	vector<int> start; //start cell
-	stack<vector<int>>* backtrace; //backtrace stack
+	stack<vector<int> >* backtrace; //backtrace stack
 	stack<Direction>* backtraceDir; //backtrace direction stack
 };
