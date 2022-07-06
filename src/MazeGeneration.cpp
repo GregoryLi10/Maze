@@ -9,7 +9,7 @@ MazeGeneration::MazeGeneration(int width, int height) {//constructor initialize 
 		maze[i] = new unordered_set<Direction>[width];
 	}
 	start = {(int)(rand() % height), (int)(rand() % width)};
-	MazeGeneration::visited = new unordered_set<vector<int>, VectorHash>(); //ERROR
+	MazeGeneration::visited = new unordered_set<vector<int>, VectorHash>(); 
 	MazeGeneration::pEndpoints = new unordered_set<vector<int>, VectorHash>();
 	backtrace = new stack<vector<int>>();
 	backtraceDir = new stack<Direction>();
@@ -45,9 +45,6 @@ void MazeGeneration::draw() {
 
 
 void MazeGeneration::generate(vector<int> curr, bool isDeadend) {
-	for (int z:curr)
-		cout<<z<<", ";
-	cout<<"\n";
 	if (curr == start && !visited->empty()) {
 		return; //if it backtraces back to start, end generation
 	}
@@ -101,21 +98,40 @@ vector<MazeGeneration::Direction>* MazeGeneration::possibles(vector<int> n) {//c
 	return possibles;
 }
 
-vector<vector<int>> MazeGeneration::DirectionToCoords(int depth) {
-	vector<vector<int>, VectorHash> v, h;
+map<bool, vector<int>> MazeGeneration::DirectionToCoords(int depth) {
+	vector<int> v, h;
 	for (int i=0; i<height; i++) {
 		for (int j=0; j<width; j++) {
-			if (i==0&&!(maze[i][j].find(UP)!=maze[i][j].end()))
-				h.push_back({j*depth, i*depth});
-			if (!(maze[i][j].find(DOWN)!=maze[i][j].end()))
-				h.push_back({j*depth, (i+1)*depth});
-			if (j==0&&!(maze[i][j].find(LEFT)!=maze[i][j].end()))
-				v.push_back({j*depth, i*depth});
-			if (!(maze[i][j].find(RIGHT)!=maze[i][j].end()))
-				v.push_back({(j+1)*depth, i*depth});
+			if (i==0&&!(maze[i][j].find(UP)!=maze[i][j].end())){
+				h.push_back(j*depth);
+				h.push_back(i*depth);
+			}
+			if (!(maze[i][j].find(DOWN)!=maze[i][j].end())){
+				h.push_back(j*depth);
+				h.push_back((i+1)*depth);
+			}
+			if (j==0&&!(maze[i][j].find(LEFT)!=maze[i][j].end())){
+				v.push_back(j*depth); 
+				v.push_back(i*depth);
+			}
+			if (!(maze[i][j].find(RIGHT)!=maze[i][j].end())){
+				v.push_back((j+1)*depth);
+				v.push_back(i*depth);
+			}
 		}
 	}
-	return ;
+	map<bool, vector<int>> map;
+	map[false]=h;
+	map[true]=v;
+	cout<<"horizontal = { ";
+	for (int z: map.at(false))
+		cout<<z<<", ";
+	cout<<"}\n";
+	cout<<"vertical = { ";
+	for (int z: map.at(true))
+		cout<<z<<", ";
+	cout<<"}\n";
+	return map;
 }
 
 // MazeGeneration::MazeGeneration(int n) {//constructor for square mazes
@@ -130,5 +146,6 @@ MazeGeneration::~MazeGeneration() {
 }
 
 int main() {
-	MazeGeneration obj(25,25);
+	MazeGeneration obj(3, 3);
+	obj.DirectionToCoords(10);
 }
