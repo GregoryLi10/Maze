@@ -135,13 +135,13 @@ public class MazeGeneration {
 					h.add(new ArrayList<Integer>(List.of(j*depth, i*depth)));
 				}
 				if (!maze[i][j].contains(Direction.DOWN)) {
-					h.add(new ArrayList<Integer>(List.of(j*depth, (i+1)*depth)));
+					h.add(new ArrayList<Integer>(List.of(j*depth+depth/10, (i+1)*depth)));
 				}
 				if (!maze[i][j].contains(Direction.LEFT)) {
 					v.add(new ArrayList<Integer>(List.of(j*depth, i*depth)));
 				}
 				if (!maze[i][j].contains(Direction.RIGHT)) {
-					v.add(new ArrayList<Integer>(List.of((j+1)*depth, i*depth)));
+					v.add(new ArrayList<Integer>(List.of((j+1)*depth, i*depth+depth/10)));
 				}
 			}
 		}
