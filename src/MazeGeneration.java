@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
@@ -125,6 +126,31 @@ public class MazeGeneration {
 		return possibles;
 	}
 	
+	public HashMap<Boolean, HashSet<ArrayList<Integer>>> DirectionToCoords(int depth){
+		HashMap<Boolean, HashSet<ArrayList<Integer>>> map=new HashMap<Boolean, HashSet<ArrayList<Integer>>>();
+		HashSet<ArrayList<Integer>> v=new HashSet<ArrayList<Integer>>(), h=new HashSet<ArrayList<Integer>>();
+		for (int i=0; i<height; i++) {
+			for (int j=0; j<width; j++) {
+				if (!maze[i][j].contains(Direction.UP)) {
+					h.add(new ArrayList<Integer>(List.of(j*depth, i*depth)));
+				}
+				if (!maze[i][j].contains(Direction.DOWN)) {
+					h.add(new ArrayList<Integer>(List.of(j*depth, (i+1)*depth)));
+				}
+				if (!maze[i][j].contains(Direction.LEFT)) {
+					v.add(new ArrayList<Integer>(List.of(j*depth, i*depth)));
+				}
+				if (!maze[i][j].contains(Direction.RIGHT)) {
+					v.add(new ArrayList<Integer>(List.of((j+1)*depth, i*depth)));
+				}
+			}
+		}
+		map.put(false, h);
+		map.put(true, v);
+		System.out.println("Coords: "+map);
+		return map;
+	}
+	
 	public MazeGeneration(int width, int height) { //constructor initialize all variables and calls generate
 		this.width=width;
 		this.height=height;
@@ -138,19 +164,19 @@ public class MazeGeneration {
 		backtrace=new Stack<int[]>();
 		backtraceDir=new Stack<Direction>();
 		generate(); //generate maze
-		MazeSaver saver=new MazeSaver(); //save maze to text file
-		try {
-			saver.save("maze.txt", maze);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		MazeLoader loader=new MazeLoader(); //load maze from text file
-		try {
-			maze=loader.load("maze.txt");
-			draw();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		MazeSaver saver=new MazeSaver(); //save maze to text file
+//		try {
+//			saver.save("maze.txt", maze);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		MazeLoader loader=new MazeLoader(); //load maze from text file
+//		try {
+//			maze=loader.load("maze.txt");
+//			draw();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public MazeGeneration(int n) { //constructor for square mazes
@@ -158,6 +184,7 @@ public class MazeGeneration {
 	}
 	
 	public static void main(String[] args) { //main method to create maze generator
-		new MazeGeneration(50);
+		MazeGeneration g=new MazeGeneration(25);
+		g.DirectionToCoords(10);
 	}
 }
