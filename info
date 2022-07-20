@@ -1,1 +1,4 @@
 * Recursive backtrace maze generation algorithm
+* Initially done in Java, presented using Java AWT
+* Translated into C++
+* Ported into Unreal Engine 4 and into a 3D environment
