@@ -152,18 +152,30 @@ public class MazeGeneration {
 	}
 	
 	public MazeGeneration(int width, int height) { //constructor initialize all variables and calls generate
+		this(width, height, new int[] {(int) (Math.random()*height), (int) (Math.random()*width)});
+	}
+	
+	public MazeGeneration(int width, int height, int[] start) {
 		this.width=width;
 		this.height=height;
 		maze=new HashSet[height][width];
 		for (int i=0; i<height; i++) 
 			for (int j=0; j<width; j++) 
 				maze[i][j]=new HashSet<Direction>();
-		start=new int[]{(int) (Math.random()*height), (int) (Math.random()*width)};
+		try {
+			if (start[0]>=0&&start[0]<width&&start[1]>=0&&start[1]<height)
+				this.start=Arrays.copyOf(start, 2);
+			else throw new Exception();
+		} catch (Exception e) {
+			start=new int[]{(int) (Math.random()*height), (int) (Math.random()*width)};
+			System.out.println("start point invalid, random start point used");
+		}
 		visited=new HashSet<List<Integer>>();
 		pEndpoints=new HashSet<List<Integer>>();
 		backtrace=new Stack<int[]>();
 		backtraceDir=new Stack<Direction>();
 		generate(); //generate maze
+		
 //		MazeSaver saver=new MazeSaver(); //save maze to text file
 //		try {
 //			saver.save("maze.txt", maze);
@@ -181,6 +193,10 @@ public class MazeGeneration {
 	
 	public MazeGeneration(int n) { //constructor for square mazes
 		this(n,n);
+	}
+	
+	public MazeGeneration(int n, int[] start) {
+		this(n,n,start);
 	}
 	
 	public static void main(String[] args) { //main method to create maze generator

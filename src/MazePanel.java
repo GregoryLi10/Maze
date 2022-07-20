@@ -12,7 +12,7 @@ public class MazePanel {
 	private JFrame frame;
 	private int[] screensize={(int) Toolkit.getDefaultToolkit().getScreenSize().getWidth(), (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight()};
 	
-	public MazePanel(HashMap<Boolean, HashSet<ArrayList<Integer>>> map, int depth) {
+	public MazePanel(HashMap<Boolean, HashSet<ArrayList<Integer>>> map, int depth, int width, int height) {
 		frame=new JFrame();
 		frame.setSize(screensize[0], screensize[1]);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,13 +22,13 @@ public class MazePanel {
 				g.fillRect(0, 0, screensize[0], screensize[1]);
 				g.setColor(Color.black);
 				HashSet<ArrayList<Integer>> temp=map.get(false);
+				
 				for (ArrayList<Integer> h:temp) {
-					System.out.print(h.get(0)+", "+h.get(1)+", ");
-					g.fillRect(h.get(0), h.get(1), depth, depth/10);
+					g.fillRect(screensize[0]/2-width/2+h.get(0), (screensize[1]-120)/2-height/2+h.get(1), depth, depth/10);
 				}
 				temp=map.get(true);
 				for (ArrayList<Integer> v:temp)  {
-					g.fillRect(v.get(0), v.get(1), depth/10, depth);
+					g.fillRect(screensize[0]/2-width/2+v.get(0), (screensize[1]-120)/2-height/2+v.get(1), depth/10, depth);
 				}
 			}
 		};
@@ -48,6 +48,8 @@ public class MazePanel {
 	}
 	
 	public static void main(String[] args) {
-		new MazePanel(new MazeGeneration(15).DirectionToCoords(50), 50);
+		MazeGeneration m=new MazeGeneration(15, new int[]{0,0});
+		int n=50;
+		MazePanel mp=new MazePanel(m.DirectionToCoords(n), n, m.width*n, m.height*n);
 	}
 }
